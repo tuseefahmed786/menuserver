@@ -19,17 +19,17 @@ mongoose.connect(db).then(() => {
     console.log("error in db" + error)
 
 })
+app.use(cors({
+    origin: 'https://emenu-sandy.vercel.app/', // Replace with your Vercel app URL
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow these HTTP methods
+    credentials: true, // Allow credentials (if needed)
+}));
 
 app.use(express.static(path.join(__dirname, '../frontend/build')));
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname + '/frontend/build/index.html'));
 });
 
-app.use(cors({
-    origin: 'https://emenu-sandy.vercel.app/', // Replace with your Vercel app URL
-    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow these HTTP methods
-    credentials: true, // Allow credentials (if needed)
-}));
 
 app.use(bodyParser.json());
 app.use(cors());
