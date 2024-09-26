@@ -1,0 +1,9 @@
+const express = require('express')
+const router = express.Router()
+const categoryController = require("../controllers/categoryController")
+const authMiddleware = require('../middleware/auth')
+
+router.post("/addCategory", authMiddleware, categoryController.addCategory)
+router.get("/categories",authMiddleware,categoryController.allCategory)
+router.put("/updatedCategory/:categoryId", categoryController.editCategory)
+module.exports = router
