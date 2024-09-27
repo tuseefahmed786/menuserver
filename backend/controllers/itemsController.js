@@ -2,10 +2,14 @@ const Category = require("../schema/Category")
 const Item = require("../schema/Item")
 exports.itemsController = async (req, res) => {
     try {
+        console.log("dddd" + req.file)
+
         const { selectedCateg } = req.params;  // Category ID from the route params
         const { name, price, description } = req.body;
-        const imageUrl = req.file ? `/uploads/images/${req.file.filename}` : ''
-        const newProduct = new Item({ name, price, description, imageUrl });
+        const imageUrl = req.file.path; // Cloudinary URL of the uploaded image
+        const publicId = req.file.filename;
+
+        const newProduct = new Item({ name, price, description, imageUrl, publicIdImg: publicId });
 
         await newProduct.save();
         // 2. Add the product to the selected category
@@ -22,3 +26,6 @@ exports.itemsController = async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 }
+
+
+// const imageUrl = req.file ? `/uploads/images/${req.file.filename}` : ''  {for local with out cloudniary  link store in db}

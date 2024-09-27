@@ -5,6 +5,10 @@ const iconSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    publicIdUrl:{
+        type: String,
+        required: true,
+    }
 });
 
 const Icon = mongoose.model('Icon', iconSchema);

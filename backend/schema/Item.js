@@ -16,6 +16,10 @@ const itemSchema = new mongoose.Schema({
     imageUrl: {
         type: String,
         required: true
+    },
+    publicIdImg:{
+        type: String,
+        required: true
     }
 });
 
