@@ -21,13 +21,13 @@ mongoose.connect(db).then(() => {
 })
 
 app.use(cors({
-    origin: 'https://emenu-sandy.vercel.app/', // Replace with your Vercel app URL
+    origin: 'https://emenu-sandy.vercel.app', // Replace with your Vercel app URL
     methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow these HTTP methods
     credentials: true, // Allow credentials (if needed)
 }));
 
 app.use(bodyParser.json());
-app.use(cors());
+// app.use(cors());
 // app.use(express.static('public'));
 
 app.get("/", async(req,res)=>{
