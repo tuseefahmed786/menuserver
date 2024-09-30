@@ -4,7 +4,7 @@ exports.restaurantController = async (req, res) => {
         const { restaurantName, country, timeZone } = req.body.formData;
         const userId = req.user.userId;
         const existingRestaurant = await restaurant.findOne({ ownerId: userId });
-        console.log("existingRestaurant" + existingRestaurant)
+
         if (existingRestaurant) {
             existingRestaurant.name = restaurantName || existingRestaurant.name;
             existingRestaurant.country = country || existingRestaurant.country;
@@ -20,7 +20,6 @@ exports.restaurantController = async (req, res) => {
             timeZone: timeZone,
             ownerId: userId
         });
-        console.log(createNewRestaurant)
         await createNewRestaurant.save();
         res.status(201).json({ message: "Restaurant created successfully", restaurant: createNewRestaurant });
     } catch (error) {
@@ -29,6 +28,3 @@ exports.restaurantController = async (req, res) => {
 
 }
 
-exports.updateRestaurantInfo = async (req,res) =>{
-
-}

@@ -6,10 +6,9 @@ exports.addCategory = async (req, res) => {
     try {
         const { title, selectedIcon } = req.body;
         const userId = req.user.userId;
-        console.log(userId)
 
         // Check if the category already exists
-        const categoryExists = await Category.findOne({ title });
+        const categoryExists = await Category.findOne({ title, ownerId:userId });
         if (categoryExists) {
             return res.status(400).json({ message: 'Category already exists' });
         }
