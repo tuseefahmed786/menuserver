@@ -2,7 +2,7 @@ const user = require("../schema/user")
 const harsh = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const restaurant = require("../schema/restaurant")
-
+require('dotenv').config()
 exports.userLoginController = async (req, res) => {
     try {
         const { email, password } = req.body

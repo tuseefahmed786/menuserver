@@ -4,7 +4,6 @@ const categorySchema = new mongoose.Schema({
     title: {
         type: String,
         required: true,
-        unique: true
       },
       icon: {
         type: String,
@@ -23,6 +22,7 @@ const categorySchema = new mongoose.Schema({
         ref:'user'
       }
 });
+categorySchema.index({ title: 1, ownerId: 1 }, { unique: true });
 
 const Category = mongoose.model('Category', categorySchema);
 
