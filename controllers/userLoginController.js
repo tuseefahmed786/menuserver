@@ -13,7 +13,7 @@ exports.userLoginController = async (req, res) => {
         const findRestaurant = await restaurant.findOne({ ownerId: userFound._id })
         const isValidPass = await harsh.compare(password, userFound.password)
         if (!isValidPass) {
-            return res.status(400).send("Password is not correct")
+            return res.status(401).send("Password is not correct")
         }
 
         const token = jwt.sign({ userId: userFound._id }, process.env.JWT_KEY, {
