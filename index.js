@@ -9,6 +9,7 @@ const addCategory = require('./routes/addCategory')
 const itemsProducts = require('./routes/itemsProduct')
 const iconsRouter = require('./routes/icons')
 const fetchMenu = require('./routes/fetchMenu')
+const isValidToken = require('./routes/isValidToken')
 const mongoose = require('mongoose');
 // require('dotenv').config()
 // const db = 'mongodb://atuseef261:emenutuseef@emenudb-shard-00-00.vdtcf.mongodb.net:27017,emenudb-shard-00-01.vdtcf.mongodb.net:27017,emenudb-shard-00-02.vdtcf.mongodb.net:27017/?ssl=true&replicaSet=atlas-fmwgzm-shard-0&authSource=admin&retryWrites=true&w=majority&appName=emenudb'
@@ -41,6 +42,7 @@ app.use(userRouter)
 app.use(addCategory)
 app.use(itemsProducts)
 app.use(iconsRouter)
+app.use(isValidToken)
 // Start the server 
 const PORT = process.env.PORT || 3002;
 app.listen(PORT, () => {

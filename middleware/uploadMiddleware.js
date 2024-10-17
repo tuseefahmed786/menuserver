@@ -8,7 +8,7 @@ cloud_name:'dlefxmkgz',
     api_key:'792337759717564',
     api_secret:'wdidG7hZ-HyUgDi8nCrppqWfv-M'
 });
-
+console.log("uploadedddd")
 // Configure Cloudinary storage for multer
 const storage = new CloudinaryStorage({
     cloudinary: cloudinary,
