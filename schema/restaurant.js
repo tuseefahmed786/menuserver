@@ -10,7 +10,7 @@ const restaurantSchema = new mongoose.Schema({
     country: {
         type: String,
     },
-    timeZone: {
+    currency: {
         type: String,
     },
     ownerId: {
