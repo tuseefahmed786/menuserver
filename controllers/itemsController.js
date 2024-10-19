@@ -4,11 +4,10 @@ exports.itemsController = async (req, res) => {
     try {
         const { selectedCateg } = req.params;  // Category ID from the route params
         const { name, price, description } = req.body;
-        const imageUrl = req.file.path; // Cloudinary URL of the uploaded image
+        const imageUrl = req.file.path; // Cloud URL of the uploaded image
         const publicId = req.file.filename;
 
         const newProduct = new Item({ name, price, description, imageUrl, publicIdImg: publicId });
-
         await newProduct.save();
         // 2. Add the product to the selected category
         const category = await Category.findById(selectedCateg);
@@ -34,12 +33,31 @@ exports.itemsEditController = async (req, res) => {
         } else {
             image = imageUrl; // Existing image URL
         }
-        const updatedCategory = await Item.findByIdAndUpdate(id, { name, price, description, imageUrl:image }, { new: true })
+        const updatedCategory = await Item.findByIdAndUpdate(id, { name, price, description, imageUrl: image }, { new: true })
 
-        res.status(200).json({ message: 'Product updated and added to category', updated:updatedCategory  });
+        res.status(200).json({ message: 'Product updated and added to category', updated: updatedCategory });
     } catch (error) {
         res.status(500).json({ error: 'Internal server error' });
     }
 }
 
-// const imageUrl = req.file ? `/uploads/images/${req.file.filename}` : ''  {for local with out cloudniary  link store in db}
+exports.deleteTheCategory = async (req, res) => {
+    const { editCategory } = req.params;
+    console.log(editCategory);  // Category ID from the route params
+
+    try {
+        const deletedCategory = await Category.findByIdAndDelete(editCategory);
+        
+        if (!deletedCategory) {
+            return res.status(400).send('Category not found');  // Return immediately after sending the response
+        }
+        
+        return res.status(200).send({ message: 'Category deleted successfully', deletedCategory });
+    
+    } catch (error) {
+        console.error("Error in deleting the category:", error);
+        if (!res.headersSent) {  // Make sure the headers haven't been sent yet
+            res.status(500).send('Internal server error');
+        }
+    }
+};

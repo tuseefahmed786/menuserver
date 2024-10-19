@@ -9,6 +9,10 @@ const userSchema = new mongoose.Schema({
     password:{
         type:String,
         required:true,
+    },
+    restaurantName:{
+        type:String,
+        required:true,
     }
 })
 

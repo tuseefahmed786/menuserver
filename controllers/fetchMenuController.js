@@ -8,7 +8,7 @@ exports.fetchMenu = async (req,res) =>{
             name: { $regex: new RegExp(`^${restaurantName}$`, 'i') }
         })
         if (!restaurantName) {
-            res.send("this param is a wrong we can't find restaurant")
+           return res.status(403).send("this param is a wrong we can't find restaurant")
         }
         const getcatandProducts = await Category.find({ ownerId: findrestaurant.ownerId }).populate('products')
         res.json(getcatandProducts);
