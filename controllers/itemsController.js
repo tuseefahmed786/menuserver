@@ -41,23 +41,21 @@ exports.itemsEditController = async (req, res) => {
     }
 }
 
-exports.deleteTheCategory = async (req, res) => {
-    const { editCategory } = req.params;
-    console.log(editCategory);  // Category ID from the route params
-
-    try {
-        const deletedCategory = await Category.findByIdAndDelete(editCategory);
-        
-        if (!deletedCategory) {
-            return res.status(400).send('Category not found');  // Return immediately after sending the response
-        }
-        
-        return res.status(200).send({ message: 'Category deleted successfully', deletedCategory });
+exports.deleteTheProduct = async (req, res) => {
+   const {productId} = req.params
+   console.log(productId)
+   try {
+    const deletedProduct = await Item.findByIdAndDelete(productId);
     
-    } catch (error) {
-        console.error("Error in deleting the category:", error);
-        if (!res.headersSent) {  // Make sure the headers haven't been sent yet
-            res.status(500).send('Internal server error');
-        }
+    if (!deletedProduct) {
+        return res.status(400).send('Category not found');  // Return immediately after sending the response
     }
-};
+    return res.status(200).send({ message: 'Product deleted successfully', deletedProduct });
+
+} catch (error) {
+    console.error("Error in deleting the category:", error);
+    if (!res.headersSent) {  // Make sure the headers haven't been sent yet
+        res.status(500).send('Internal server error');
+    }
+}
+}

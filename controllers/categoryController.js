@@ -55,3 +55,23 @@ exports.editCategory = async (req, res) => {
         res.status(404).send("error in editing category"+ error)
     }
 }
+
+exports.deleteTheCategory = async (req, res) => {
+    const { editCategory } = req.params;
+    console.log(editCategory);  // Category ID from the route params
+
+    try {
+        const deletedCategory = await Category.findByIdAndDelete(editCategory);
+        
+        if (!deletedCategory) {
+            return res.status(400).send('Category not found');  // Return immediately after sending the response
+        }
+        return res.status(200).send({ message: 'Category deleted successfully', deletedCategory });
+    
+    } catch (error) {
+        console.error("Error in deleting the category:", error);
+        if (!res.headersSent) {  // Make sure the headers haven't been sent yet
+            res.status(500).send('Internal server error');
+        }
+    }
+};
