@@ -7,13 +7,20 @@ exports.userControlller = async (req, res) => {
     const { email, password, restaurantName } = req.body;
 
     // Check for existing restaurant name
-    const existingRestaurant = await restaurant.findOne({ name: restaurantName });
+    const existingRestaurant = await restaurant.findOne({ 
+      name: { $regex: new RegExp(`^${restaurantName}$`, 'i') }, // Case-insensitive regex match
+
+     });
     if (existingRestaurant) {
       return res.status(409).send('Restaurant name already exists'); // Conflict status code for duplicates
     }
 
     // Check for existing user email
-    const existingUser = await user.findOne({ email: email });
+    const existingUser = await user.findOne(
+      { 
+        email: { $regex: new RegExp(`^${email}$`, 'i') }, // Case-insensitive regex match
+
+      });
     if (existingUser) {
       return res.status(409).send('Email already exists'); // Use 409 for conflict
     }
