@@ -7,6 +7,10 @@ const restaurantSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
+    nameWithOutSpace:{
+        type:String,
+        required:true
+    },
     country: {
         type: String,
     },
