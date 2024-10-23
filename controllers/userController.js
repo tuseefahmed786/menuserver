@@ -5,10 +5,11 @@ const bcrypt = require('bcrypt');
 exports.userControlller = async (req, res) => {
   try {
     const { email, password, restaurantName } = req.body;
+    const normalizedRestaurantName = restaurantName.replace(/\s+/g, '').toLowerCase();
 
     // Check for existing restaurant name
     const existingRestaurant = await restaurant.findOne({ 
-      name: { $regex: new RegExp(`^${restaurantName}$`, 'i') }, // Case-insensitive regex match
+      nameWithOutSpace: { $regex: new RegExp(`^${normalizedRestaurantName}$`, 'i') }, // Case-insensitive regex match
 
      });
     if (existingRestaurant) {
@@ -35,6 +36,7 @@ exports.userControlller = async (req, res) => {
     // Create new restaurant
     const createNewRestaurant = new restaurant({
       name: restaurantName,
+      nameWithOutSpace:normalizedRestaurantName,
       ownerId: userInfoStore._id,
     });
     await createNewRestaurant.save();
