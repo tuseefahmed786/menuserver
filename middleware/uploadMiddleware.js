@@ -4,11 +4,10 @@ const { CloudinaryStorage } = require('multer-storage-cloudinary');
 
 // Configure Cloudinary with your credentials
 cloudinary.config({
-cloud_name:'dlefxmkgz',
-    api_key:'792337759717564',
-    api_secret:'wdidG7hZ-HyUgDi8nCrppqWfv-M'
+    cloud_name: 'dlefxmkgz',
+    api_key: '792337759717564',
+    api_secret: 'wdidG7hZ-HyUgDi8nCrppqWfv-M'
 });
-console.log("uploadedddd")
 // Configure Cloudinary storage for multer
 const storage = new CloudinaryStorage({
     cloudinary: cloudinary,
@@ -21,7 +20,7 @@ const storage = new CloudinaryStorage({
 // Initialize multer with the Cloudinary storage
 const upload = multer({ storage });
 // Export upload middleware and delete function
-module.exports =  upload;
+module.exports = upload;
 
 
 
