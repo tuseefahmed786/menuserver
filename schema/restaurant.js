@@ -17,6 +17,9 @@ const restaurantSchema = new mongoose.Schema({
     currency: {
         type: String,
     },
+    logo:{
+        type:String,
+    },
     ownerId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',

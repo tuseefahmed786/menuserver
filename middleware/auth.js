@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config()
 const authMiddleware = (req, res, next) => {
     const token = req.headers['authorization'];
-
+    // console.log(token + )
     if (!token) {
         return res.status(403).send('Token is missing');
     }
@@ -11,7 +11,7 @@ const authMiddleware = (req, res, next) => {
         if (err) {
             return res.status(401).send('Invalid token');
         }
-        req.user = decoded; 
+        req.user = decoded;
         next();
     });
 };
