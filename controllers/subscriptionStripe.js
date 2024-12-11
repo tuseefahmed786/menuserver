@@ -24,8 +24,8 @@ exports.subscriptionStripe = async (req, res) => {
                 type: type,
                 // Attach userId to metadata
             },
-            success_url: 'http://localhost:3000/dashboard/PaymentDone?session_id={CHECKOUT_SESSION_ID}', // Attach session ID
-            cancel_url: 'http://localhost:3000/dashboard/subscription',  // Redirect after cancel
+            success_url: 'https://emenu-sandy.vercel.app/dashboard/PaymentDone?session_id={CHECKOUT_SESSION_ID}', // Attach session ID
+            cancel_url: 'https://emenu-sandy.vercel.app/dashboard/subscription',  // Redirect after cancel
         });
         // Send the session URL back to the client
         res.status(200).json({ url: session.url });
