@@ -33,22 +33,37 @@ exports.addCategory = async (req, res) => {
 exports.allCategory = async (req, res) => {
     try {
         const userId = req.user.userId;
-        const getAllCategory = await Category.find({ ownerId: userId }).populate('products')
-        console.log(getAllCategory)
+        const getAllCategory = await Category.find({ ownerId: userId }).populate('products');
+        console.log(getAllCategory);
 
-        if (!getAllCategory) {
-            return res.send("now the Category is empty")
-        }
-        res.json(getAllCategory); // Send back as JSON
+        // if (getAllCategory.length === 0) {
+        //     return res.status(200).json(getAllCategory);
+        // }
+
+        res.status(200).json(getAllCategory); // Send back as JSON with a success status
     } catch (error) {
-        return res.send("error in fetch cat" + error)
+        console.error("Error fetching categories:", error);
+        return res.status(500).json({ message: "Error fetching categories", error: error.message });
     }
-}
+};
+
 
 exports.editCategory = async (req, res) => {
     try {
         const { title, selectedIcon } = req.body;
         const categoryId = req.params
+        const userId = req.user.userId;
+
+        const existingCategory = await Category.findOne({
+            ownerId: userId,
+            title: { $regex: new RegExp(`^${title}$`, 'i') },
+            _id: { $ne: categoryId.categoryId }
+        });
+
+        if (existingCategory) {
+            return res.status(400).json({ message: "category with this title already exists for this user" });
+        }
+
         const updatedCategory = await Category.findByIdAndUpdate(categoryId.categoryId, { title, icon: selectedIcon },{new:true}).populate('products')
         return res.status(201).json({ message: 'Category updated/edit successfully', category: updatedCategory });
     } catch (error) {

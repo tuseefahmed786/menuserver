@@ -10,8 +10,8 @@ exports.userControlller = async (req, res) => {
     // Check for existing restaurant name
     const existingRestaurant = await restaurant.findOne({ 
       nameWithOutSpace: { $regex: new RegExp(`^${normalizedRestaurantName}$`, 'i') }, // Case-insensitive regex match
-
      });
+
     if (existingRestaurant) {
       return res.status(409).send('Restaurant name already exists'); // Conflict status code for duplicates
     }
@@ -29,8 +29,12 @@ exports.userControlller = async (req, res) => {
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    const trialExpiresAt = new Date();
+    trialExpiresAt.setDate(trialExpiresAt.getDate() + 7);
+    console.log("Trial expires at:", trialExpiresAt);
+
     // Create new user
-    const userInfoStore = new user({ email: email, password: hashedPassword, restaurantName: restaurantName });
+    const userInfoStore = new user({ email: email, password: hashedPassword, restaurantName: restaurantName, trialExpiresAt });
     await userInfoStore.save();
 
     // Create new restaurant
@@ -40,6 +44,8 @@ exports.userControlller = async (req, res) => {
       ownerId: userInfoStore._id,
     });
     await createNewRestaurant.save();
+
+
 
     // Respond with success
     res.status(201).send("User created and restaurant created");
