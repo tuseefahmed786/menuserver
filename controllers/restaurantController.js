@@ -1,10 +1,10 @@
 const restaurant = require('../schema/restaurant');
-
+const user = require('../schema/user');
 exports.restaurantController = async (req, res) => {
     try {
         const { restaurantName, country, currency } = req.body.formData;
         const userId = req.user.userId;
-     
+
         const normalizedRestaurantName = restaurantName.replace(/\s+/g, '').toLowerCase();
 
         const existingRestaurant = await restaurant.findOne({ ownerId: userId });
@@ -45,13 +45,24 @@ exports.getRestaurantData = async (req, res) => {
     try {
         const userId = req.user.userId;
         const getRestaurant = await restaurant.findOne({ ownerId: userId });
-        res.status(200).json({ message: "Restaurant details", restaurant: getRestaurant });
+        const userFound = await user.findOne({ _id: userId })
+        const now = new Date();
+        let daysLeft;
+        if (userFound.subscriptionType == "free_trial") {
+            if (userFound.trialExpiresAt < now) {
+                daysLeft = 'expiry'
+            } else {
+                const leftDay = Math.ceil((userFound.trialExpiresAt - now) / (1000 * 60 * 60 * 24));
+                daysLeft = leftDay
+            }
+        }
+        res.status(200).json({ message: "Restaurant details", restaurant: getRestaurant, daysLeft,userFound });
     } catch (error) {
         console.log(error)
     }
 }
 
-exports.uploadTheLogo = async (req,res)=>{
+exports.uploadTheLogo = async (req, res) => {
     try {
         const restaurantId = req.user.userId;
         console.log(restaurantId + "df3d")
@@ -61,7 +72,7 @@ exports.uploadTheLogo = async (req,res)=>{
 
         // Save the updated restaurant
         const updatedRestaurant = await existingRestaurant.save();
-    
+
         console.log(updatedRestaurant + "updatedRestaurant")
 
         if (!updatedRestaurant) {
@@ -73,6 +84,6 @@ exports.uploadTheLogo = async (req,res)=>{
             logoUrl: updatedRestaurant.logo, // Return the updated logo URL
         });
     } catch (error) {
-        
+
     }
 }

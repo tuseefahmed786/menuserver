@@ -12,6 +12,7 @@ const fetchMenu = require('./routes/fetchMenu')
 const isValidToken = require('./routes/isValidToken')
 const stripePayment = require('./routes/stripe')
 const mongoose = require('mongoose');
+const { handleStripeWebhook } = require('./controllers/handleStripeWebhook');
 // const db = 'mongodb://atuseef261:emenutuseef@emenudb-shard-00-00.vdtcf.mongodb.net:27017,emenudb-shard-00-01.vdtcf.mongodb.net:27017,emenudb-shard-00-02.vdtcf.mongodb.net:27017/?ssl=true&replicaSet=atlas-fmwgzm-shard-0&authSource=admin&retryWrites=true&w=majority&appName=emenudb'
 const db = process.env.MONGO_URI; // Make sure to set this in Vercel
 
@@ -49,6 +50,8 @@ app.use(itemsProducts)
 app.use(iconsRouter)
 app.use(isValidToken)
 app.use(stripePayment)
+app.post('/webhook', bodyParser.raw({ type: 'application/json' }), handleStripeWebhook);
+
 // Start the server 
 const PORT = process.env.PORT || 3002;
 app.listen(PORT, () => {

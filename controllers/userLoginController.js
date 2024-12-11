@@ -19,6 +19,7 @@ exports.userLoginController = async (req, res) => {
         const token = jwt.sign({ userId: userFound._id }, process.env.JWT_KEY, {
             expiresIn: '30d',
         })
+
         res.json({ token, findRestaurant })
     } catch (error) {
         console.error("Login error: ", error)
