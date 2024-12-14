@@ -10,7 +10,7 @@ exports.userLoginController = async (req, res) => {
         if (!userFound) {
             return res.status(400).send("User is not found in the database")
         }
-        const findRestaurant = await restaurant.findOne({ ownerId: userFound._id })
+        // const findRestaurant = await restaurant.findOne({ ownerId: userFound._id })
         const isValidPass = await harsh.compare(password, userFound.password)
         if (!isValidPass) {
             return res.status(401).send("Password is not correct")
@@ -20,7 +20,7 @@ exports.userLoginController = async (req, res) => {
             expiresIn: '30d',
         })
 
-        res.json({ token, findRestaurant })
+        res.json({ token })
     } catch (error) {
         console.error("Login error: ", error)
         res.status(500).send("An error occurred during login")
