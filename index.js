@@ -24,7 +24,7 @@ mongoose.connect(db).then(() => {
 
 
 app.use(cors({
-    origin: 'https://qr.cloudymenu.com', // Replace with your Vercel app URL
+    origin: ['https://qr.cloudymenu.com', 'https://www.cloudymenu.com'], // Allow both domains
     methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow these HTTP methods
     credentials: true, // Allow credentials (if needed)
 }));
