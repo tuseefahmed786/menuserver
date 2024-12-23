@@ -17,6 +17,17 @@ const mongoose = require('mongoose');
 const db = process.env.MONGO_URI; // Make sure to set this in Vercel
 
 
+app.use((req, res, next) => {
+    const host = req.headers.host; // Gets the host part of the URL (e.g., 'qr.cloudymenu.com').
+    if (host === 'qr.cloudymenu.com') {
+        // If the host is exactly 'qr.cloudymenu.com', redirect to 'https://www.qr.cloudymenu.com'
+        return res.redirect(301, `https://www.qr.cloudymenu.com${req.originalUrl}`);
+    }
+    // If the host isn't 'qr.cloudymenu.com', continue processing the request
+    next();
+});
+
+
 const allowedOrigins = [
     'https://qr.cloudymenu.com',
     'https://www.qr.cloudymenu.com',
