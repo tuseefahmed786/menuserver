@@ -16,45 +16,17 @@ const mongoose = require('mongoose');
 // const db = 'mongodb://atuseef261:emenutuseef@emenudb-shard-00-00.vdtcf.mongodb.net:27017,emenudb-shard-00-01.vdtcf.mongodb.net:27017,emenudb-shard-00-02.vdtcf.mongodb.net:27017/?ssl=true&replicaSet=atlas-fmwgzm-shard-0&authSource=admin&retryWrites=true&w=majority&appName=emenudb'
 const db = process.env.MONGO_URI; // Make sure to set this in Vercel
 
-const allowedOrigins = [
-    'https://qr.cloudymenu.com',
-    'https://www.qr.cloudymenu.com',
-    'https://www.cloudymenu.com',
-    'https://cloudymenu.com'
-];
-
-app.use(cors({
-    origin: (origin, callback) => {
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true,
-}));
-
-app.use((req, res, next) => {
-    const host = req.headers.host;
-    if (host === 'qr.cloudymenu.com') {
-        res.set('Access-Control-Allow-Origin', 'https://www.qr.cloudymenu.com');
-        return res.redirect(301, `https://www.qr.cloudymenu.com${req.originalUrl}`);
-    }
-    next();
-});
-
 mongoose.connect(db).then(() => {
     console.log("connected db")
 }).catch((error) => {
     console.log("error in db" + error)
 })
 
-// app.use(cors({
-//     origin: ['https://qr.cloudymenu.com', 'https://www.qr.cloudymenu.com',  'https://www.cloudymenu.com', 'https://cloudymenu.com'], // Allow both domains
-//     methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow these HTTP methods
-//     credentials: true, // Allow credentials (if needed)
-// }));
+app.use(cors({
+    origin: ['https://qr.cloudymenu.com', 'https://www.qr.cloudymenu.com',  'https://www.cloudymenu.com', 'https://cloudymenu.com'], // Allow both domains
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow these HTTP methods
+    credentials: true, // Allow credentials (if needed)
+}));
 
 // app.use(cors());
 app.use(bodyParser.json());
