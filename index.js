@@ -16,18 +16,6 @@ const mongoose = require('mongoose');
 // const db = 'mongodb://atuseef261:emenutuseef@emenudb-shard-00-00.vdtcf.mongodb.net:27017,emenudb-shard-00-01.vdtcf.mongodb.net:27017,emenudb-shard-00-02.vdtcf.mongodb.net:27017/?ssl=true&replicaSet=atlas-fmwgzm-shard-0&authSource=admin&retryWrites=true&w=majority&appName=emenudb'
 const db = process.env.MONGO_URI; // Make sure to set this in Vercel
 
-
-app.use((req, res, next) => {
-    const host = req.headers.host; // Gets the host part of the URL (e.g., 'qr.cloudymenu.com').
-    if (host === 'qr.cloudymenu.com') {
-        // If the host is exactly 'qr.cloudymenu.com', redirect to 'https://www.qr.cloudymenu.com'
-        return res.redirect(301, `https://www.qr.cloudymenu.com${req.originalUrl}`);
-    }
-    // If the host isn't 'qr.cloudymenu.com', continue processing the request
-    next();
-});
-
-
 const allowedOrigins = [
     'https://qr.cloudymenu.com',
     'https://www.qr.cloudymenu.com',
@@ -46,6 +34,15 @@ app.use(cors({
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
 }));
+
+app.use((req, res, next) => {
+    const host = req.headers.host;
+    if (host === 'qr.cloudymenu.com') {
+        res.set('Access-Control-Allow-Origin', 'https://www.qr.cloudymenu.com');
+        return res.redirect(301, `https://www.qr.cloudymenu.com${req.originalUrl}`);
+    }
+    next();
+});
 
 mongoose.connect(db).then(() => {
     console.log("connected db")
