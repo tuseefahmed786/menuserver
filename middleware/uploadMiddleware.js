@@ -13,7 +13,7 @@ const storage = new CloudinaryStorage({
     cloudinary: cloudinary,
     params: {
         folder: 'uploads', // Folder name in Cloudinary where images will be stored
-        allowed_formats: ['jpg', 'png'], // Allowed image formats
+        allowed_formats: ['jpg', 'jpeg', 'png', 'webp', 'heic', 'heif'], // Allowed image formats
     },
 });
 

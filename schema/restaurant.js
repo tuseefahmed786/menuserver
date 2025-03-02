@@ -20,6 +20,15 @@ const restaurantSchema = new mongoose.Schema({
     logo:{
         type:String,
     },
+ cover:{
+        type:String,
+    },
+    about:{
+        type:String,
+    },
+    location:{
+        type:String,
+    },
     ownerId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
