@@ -11,9 +11,9 @@ console.log(token)
         if (err) {
             return res.status(401).send('Invalid token');
         }
-        req.user = decoded;
+        req.user = decoded;  
         next();
     });
 };
-
+// dds
 module.exports = authMiddleware
