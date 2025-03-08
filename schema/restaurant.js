@@ -7,11 +7,27 @@ const restaurantSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
+    nameWithOutSpace:{
+        type:String,
+        required:true
+    },
     country: {
         type: String,
     },
-    timeZone: {
+    currency: {
         type: String,
+    },
+    logo:{
+        type:String,
+    },
+ cover:{
+        type:String,
+    },
+    about:{
+        type:String,
+    },
+    location:{
+        type:String,
     },
     ownerId: {
         type: mongoose.Schema.Types.ObjectId,
