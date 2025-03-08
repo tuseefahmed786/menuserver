@@ -8,7 +8,6 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: true,
     },
     restaurantName: {
         type: String,
@@ -32,7 +31,7 @@ const userSchema = new mongoose.Schema({
     },
     trialExpiresAt: {
          type: Date,
-          required: true 
+          required: true ,
  }, // Add this field
 
 })

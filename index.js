@@ -13,8 +13,12 @@ const isValidToken = require('./routes/isValidToken')
 const stripePayment = require('./routes/stripe')
 const socialLink = require('./routes/socialLink')
 const mongoose = require('mongoose');
-// const db = 'mongodb://atuseef261:emenutuseef@emenudb-shard-00-00.vdtcf.mongodb.net:27017,emenudb-shard-00-01.vdtcf.mongodb.net:27017,emenudb-shard-00-02.vdtcf.mongodb.net:27017/?ssl=true&replicaSet=atlas-fmwgzm-shard-0&authSource=admin&retryWrites=true&w=majority&appName=emenudb'
-const db = process.env.MONGO_URI; // Make sure to set this in Vercel
+const session = require('express-session');
+require('dotenv').config()
+const authUser = require('./controllers/authUser');
+const passport = require('./middleware/passport'); // Ensure this file exists and correctly configures the Google Strategy
+const db = 'mongodb://atuseef261:emenutuseef@emenudb-shard-00-00.vdtcf.mongodb.net:27017,emenudb-shard-00-01.vdtcf.mongodb.net:27017,emenudb-shard-00-02.vdtcf.mongodb.net:27017/?ssl=true&replicaSet=atlas-fmwgzm-shard-0&authSource=admin&retryWrites=true&w=majority&appName=emenudb'
+// const db = process.env.MONGO_URI; // Make sure to set this in Vercel
 
 mongoose.connect(db).then(() => {
     console.log("connected db")
@@ -23,18 +27,22 @@ mongoose.connect(db).then(() => {
 })
 
 app.use(cors({
-    origin: ['https://qr.cloudymenu.com', 'https://www.qr.cloudymenu.com',  'https://www.cloudymenu.com', 'https://cloudymenu.com'], // Allow both domains
-    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow these HTTP methods
-    credentials: true, // Allow credentials (if needed)
+    origin: "http://localhost:3000",
+    credentials: true,
+    methods: "GET,POST,PUT,DELETE",
+    allowedHeaders: "Content-Type,Authorization"
 }));
-
-// app.use(cors());
 app.use(bodyParser.json());
+app.use(session({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: false }));
+app.use(passport.initialize());
+app.use(passport.session());
 
-app.get("/", async(req,res)=>{
-res.json("we are live")
-})
+app.use(authUser);
+app.get("/auth/check-session", (req, res) => {
+    res.json({ isLoggedIn: req.isAuthenticated(), user: req.user || null });
+});
 
+app.use(authUser);
 app.use(fetchMenu)
 app.use(restaurantRouter)
 app.use(menuRouter)
@@ -46,6 +54,13 @@ app.use(isValidToken)
 app.use(stripePayment)
 app.use(socialLink)
 
+app.get('/auth/logout', (req, res) => {
+    console.log("ndk")
+   req.logOut(()=>{
+    res.redirect('/register')
+
+   });
+});
 
 // Start the server 
 const PORT = process.env.PORT || 3002;
