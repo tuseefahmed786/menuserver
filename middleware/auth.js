@@ -5,7 +5,7 @@ const authMiddleware = (req, res, next) => {
     // console.log(token + )
     if (!token) {
         return res.status(403).send('Token is missing');
-    }n
+    }
 console.log(token)
     jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
         if (err) {
