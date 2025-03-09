@@ -9,7 +9,7 @@ router.get('/google', passport.authenticate('google', { scope: ['profile', 'emai
 
 router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/' }), (req, res) => {
     const token = jwt.sign({ userId: req.user._id }, process.env.JWT_KEY, { expiresIn: '30d' });
-    res.redirect(`http://localhost:3000/dashboard/home?token=${token}`);
+    res.redirect(`https://www.qr.cloudymenu.com/dashboard/home?token=${token}`);
 });
 
 module.exports = router;
