@@ -27,9 +27,10 @@ mongoose.connect(db).then(() => {
 })
 
 app.use(cors({
-    origin: ['https://qr.cloudymenu.com', 'https://www.qr.cloudymenu.com',  'https://www.cloudymenu.com', 'https://cloudymenu.com'], 
-    methods: ['GET', 'POST', 'PUT', 'DELETE'], 
-    credentials: true, 
+    origin: ['https://qr.cloudymenu.com', 'https://www.qr.cloudymenu.com', 'https://www.cloudymenu.com', 'https://cloudymenu.com'], 
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
 app.use(bodyParser.json());
