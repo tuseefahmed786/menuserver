@@ -14,10 +14,10 @@ const stripePayment = require('./routes/stripe')
 const socialLink = require('./routes/socialLink')
 const mongoose = require('mongoose');
 const session = require('express-session');
-require('dotenv').config()
 const authUser = require('./controllers/authUser');
 const passport = require('./middleware/passport'); 
 // const db = 'mongodb://atuseef261:emenutuseef@emenudb-shard-00-00.vdtcf.mongodb.net:27017,emenudb-shard-00-01.vdtcf.mongodb.net:27017,emenudb-shard-00-02.vdtcf.mongodb.net:27017/?ssl=true&replicaSet=atlas-fmwgzm-shard-0&authSource=admin&retryWrites=true&w=majority&appName=emenudb'
+// require('dotenv').config()
 const db = process.env.MONGO_URI; 
 
 mongoose.connect(db).then(() => {
